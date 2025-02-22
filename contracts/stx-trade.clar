@@ -47,3 +47,23 @@
     { item-id: uint }
     { secure-access-token: (string-ascii 512) }
 )
+
+;; State variables
+(define-data-var item-counter uint u1)
+(define-data-var exchange-fee uint u3) ;; 3% fee
+(define-data-var exchange-volume uint u0)
+
+;; Input validators
+(define-private (verify-summary (text (string-ascii 256)))
+    (and 
+        (not (is-eq text ""))
+        (<= (len text) u256)
+    )
+)
+
+(define-private (verify-type (text (string-ascii 64)))
+    (and
+        (not (is-eq text ""))
+        (<= (len text) u64)
+    )
+)
