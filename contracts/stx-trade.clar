@@ -67,3 +67,21 @@
         (<= (len text) u64)
     )
 )
+
+
+(define-private (verify-token (text (string-ascii 512)))
+    (and
+        (not (is-eq text ""))
+        (<= (len text) u512)
+    )
+)
+
+;; Helper functions
+(define-private (compute-fee (price uint))
+    (/ (* price (var-get exchange-fee)) u100)
+)
+
+(define-private (process-payment (from principal) (to principal) (amount uint))
+    (stx-transfer? amount from to)
+)
+
