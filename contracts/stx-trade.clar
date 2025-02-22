@@ -24,3 +24,13 @@
         creation-block: uint
     }
 )
+
+
+(define-map trader-metrics
+    { participant: principal }
+    {
+        trade-count: uint,
+        quality-score: uint,
+        last-active: uint
+    }
+)
