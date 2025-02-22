@@ -236,3 +236,20 @@
         (ok true)
     )
 )
+
+;; Query functions
+(define-read-only (get-content-info (item-id uint))
+    (map-get? content-offerings { item-id: item-id })
+)
+
+(define-read-only (get-trader-info (participant principal))
+    (map-get? trader-metrics { participant: participant })
+)
+
+(define-read-only (get-exchange-stats)
+    (var-get exchange-volume)
+)
+
+(define-read-only (get-current-fee)
+    (var-get exchange-fee)
+)
