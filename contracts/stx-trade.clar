@@ -10,3 +10,17 @@
 (define-constant ERR_SELF_TRADE_BLOCKED (err u205))
 (define-constant ERR_PRICE_INVALID (err u206))
 (define-constant ERR_INPUT_INVALID (err u207))
+
+
+;; Storage structures
+(define-map content-offerings 
+    { item-id: uint }
+    {
+        owner: principal,
+        price-tag: uint,
+        content-summary: (string-ascii 256),
+        content-type: (string-ascii 64),
+        tradeable: bool,
+        creation-block: uint
+    }
+)
