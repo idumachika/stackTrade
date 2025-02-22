@@ -174,3 +174,37 @@
         (ok true)
     )
 )
+
+
+;; Retrieve content access
+(define-public (retrieve-access-token (item-id uint))
+    (let
+        (
+            (purchase-info (unwrap! (map-get? exchange-records 
+                { customer: tx-sender, item-id: item-id }) ERR_UNAUTHORIZED))
+            (content-access (unwrap! (map-get? content-keys 
+                { item-id: item-id }) ERR_ITEM_UNAVAILABLE))
+        )
+        (asserts! (< item-id (var-get item-counter)) ERR_INPUT_INVALID)
+        (ok (get secure-access-token content-access))
+    )
+)
+
+;; Modify listing price
+(define-public (modify-price (item-id uint) (updated-price uint))
+    (let
+        (
+            (item-info (unwrap! (map-get? content-offerings { item-id: item-id }) 
+                ERR_ITEM_UNAVAILABLE))
+        )
+        (asserts! (< item-id (var-get item-counter)) ERR_INPUT_INVALID)
+        (asserts! (is-eq (get owner item-info) tx-sender) ERR_UNAUTHORIZED)
+        (asserts! (> updated-price u0) ERR_PRICE_INVALID)
+        
+        (map-set content-offerings
+            { item-id: item-id }
+            (merge item-info { price-tag: updated-price })
+        )
+        (ok true)
+    )
+)
