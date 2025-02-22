@@ -34,3 +34,16 @@
         last-active: uint
     }
 )
+(define-map exchange-records
+    { customer: principal, item-id: uint }
+    {
+        timestamp: uint,
+        cost: uint,
+        merchant: principal
+    }
+)
+
+(define-map content-keys
+    { item-id: uint }
+    { secure-access-token: (string-ascii 512) }
+)
