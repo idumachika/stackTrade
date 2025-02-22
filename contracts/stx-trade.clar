@@ -208,3 +208,31 @@
         (ok true)
     )
 )
+
+;; Remove from marketplace
+(define-public (delist-content (item-id uint))
+    (let
+        (
+            (item-info (unwrap! (map-get? content-offerings { item-id: item-id }) 
+                ERR_ITEM_UNAVAILABLE))
+        )
+        (asserts! (< item-id (var-get item-counter)) ERR_INPUT_INVALID)
+        (asserts! (is-eq (get owner item-info) tx-sender) ERR_UNAUTHORIZED)
+        
+        (map-set content-offerings
+            { item-id: item-id }
+            (merge item-info { tradeable: false })
+        )
+        (ok true)
+    )
+)
+
+;; Administrative functions
+(define-public (adjust-fee-rate (new-rate uint))
+    (begin
+        (asserts! (is-eq tx-sender owner-address) ERR_UNAUTHORIZED)
+        (asserts! (<= new-rate u100) ERR_PRICE_INVALID)
+        (var-set exchange-fee new-rate)
+        (ok true)
+    )
+)
